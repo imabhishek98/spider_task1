@@ -1,8 +1,10 @@
 package com.example.android.spider_task1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<String> words = new ArrayList<String>();
+    ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,59 +24,56 @@ public class MainActivity extends AppCompatActivity {
 
         words.add("one");
         words.add("two");
-        words.add("three" );
+        words.add("three");
 
 
-        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, words);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, words);
 
 
+        listView = (ListView) findViewById(R.id.list);
 
 
-        ListView listView = (ListView) findViewById(R.id.list);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent myintent = new Intent(MainActivity.this, temp_a.class);
+                myintent.putExtra("ToPrint", listView.getItemAtPosition(i).toString());
+                startActivity(myintent);
+            }
+        });
 
 
         listView.setAdapter(adapter);
-
-
-
     }
 
-    public void addButton(View view)
-    {
+    public void addButton(View view) {
         EditText temp = (EditText) findViewById(R.id.add_field);
-        String x= temp.getText().toString();
-        if(x!= null)
-        words.add(x);
+        String x = temp.getText().toString();
+        if (x != null)
+            words.add(x);
 
-        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, words);
-
-
-
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, words);
 
         ListView listView = (ListView) findViewById(R.id.list);
 
 
         listView.setAdapter(adapter);
     }
-    public void removeButton(View view)
-    {
+
+    public void removeButton(View view) {
         EditText tempp = (EditText) findViewById(R.id.remove_field);
-        String y= tempp.getText().toString();
-        int x =  Integer.parseInt(y);
-        x+=1;
-        if(x<=words.size() +1 )
-        {x--;
+        String y = tempp.getText().toString();
+        int x = Integer.parseInt(y);
+        x += 1;
+        if (x <= words.size() + 1) {
             x--;
-        words.remove(x);
+            x--;
+            words.remove(x);
 
+        } else {
+            Toast.makeText(this, "Element does not exits enter", Toast.LENGTH_SHORT).show();
         }
-        else
-        {
-           Toast.makeText(this,"Element does not exits enter", Toast.LENGTH_SHORT).show();
-        }
-        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, words);
-
-
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, words);
 
 
         ListView listView = (ListView) findViewById(R.id.list);
@@ -81,5 +82,6 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
     }
+
 
 }
